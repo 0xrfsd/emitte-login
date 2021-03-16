@@ -1,9 +1,12 @@
-import React from 'react';
-import logo from './emitte.png';
+import React, { useEffect } from 'react';
+import {ReactComponent as ReactLogo} from './logo.svg';
 import right from './right.png';
-import visible from './hidden.png';
+import visible from './hidden.svg';
 import emailu from './email.png';
+
 import './App.css';
+
+import {validate, res} from 'react-email-validator'
 
 function App() {
 
@@ -11,43 +14,49 @@ function App() {
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false)
   const [isVisible, setIsVisible] = React.useState(false)
+  const [isEmailValid, setIsEmailValid] = React.useState(false)
 
-  // if(isVisible) {
-  //   setInputType("text")
-  // } else {
-  //   setInputType("password")
-  // }
+  const emailValidator = async (value) => {
+    await validate(value);
+    if (res) {
+      setIsEmailValid(true);
+      setEmail(value)
+    } else {
+      setIsEmailValid(false);
+    }
+  }
 
   return (
     <div className="App">
       <div className="Login">
         <div className="Left-login">
-        <img src={logo} className="App-logo" alt="logo" />
+          <ReactLogo className="App-logo" alt="logo" />
           <div className="Login-box">
             <div className="Login-box-header">
               <h3>Faça seu login</h3>
             </div>
             <div className="Login-box-body">
               <form className="Login-box-form">
-            <div className="Login-box-line">
-                <input
-                  className="Login-box-input"
-                  placeholder="Digite seu e-mail"
-                  type="text"
-                  id="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <img src={emailu} className="Login-box-icon" alt="email"/>
+                <div className="Login-box-line">
+                  <input
+                    autoCapitalize="none"
+                    className="Login-box-input"
+                    placeholder="Digite seu e-mail"
+                    type="text"
+                    id="email"
+                    onChange={(e) => emailValidator(e.target.value)}
+                  />
+                  <img src={emailu} className={(isEmailValid ? "Login-box-icon-valid" : "Login-box-icon")} alt="email"/>
                 </div>
                 <div className="Login-box-line">
-                <input
-                  className="Login-box-input"
-                  placeholder="Senha"
-                  type={(isVisible) ? "text" : "password"}
-                  id="email"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <img src={visible} className="Login-box-icon" alt="hidden" onClick={() => setIsVisible(!isVisible)} />
+                  <input
+                    className="Login-box-input"
+                    placeholder="Senha"
+                    type={(isVisible) ? "text" : "password"}
+                    id="email"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <img src={visible} className="Login-box-icon" alt="hidden" onClick={() => setIsVisible(!isVisible)} />
                 </div>
                 <a
                   className="App-link"
@@ -57,7 +66,7 @@ function App() {
                 >
                   Esqueceu sua senha?
         </a>
-                <button className="Login-box-submit" onClick={() => setIsLoading(true)}>
+                <button className="Login-box-submit" onClick={ async () => {}}>
                   <p>
                     {isLoading ? 'Carregando' : 'Fazer Login'}
                   </p>
@@ -67,18 +76,18 @@ function App() {
               </h1>
             </div>
           </div>
-                <div className="Cadastro">
-                <p className="Cadastro-Text">Não possui um cadastro?</p>
-                <a
-                  className="Cadastro-Link"
-                  href="https://reactjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                > Cadastre-se </a>
-                </div>
+          <div className="Cadastro">
+            <p className="Cadastro-Text">Não possui um cadastro?</p>
+            <a
+              className="Cadastro-Link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            > Cadastre-se </a>
+          </div>
         </div>
         <div className="Right-login">
-        <img src={right} className="Right-background" alt="Competi" />
+          <img src={right} className="Right-background" alt="Competi" />
         </div>
       </div>
     </div>
