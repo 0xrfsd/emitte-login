@@ -2,10 +2,10 @@
 
 # Install dependencies
 ```$npm install```
-```// ou```
+// ou
 ```$yarn```
 
 # Run application
 ```$npm start```
-```// ou```
+// ou
 ```$yarn start```
